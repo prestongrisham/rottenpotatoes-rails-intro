@@ -10,18 +10,32 @@ def show
     
     @all_ratings = Movie.all_ratings
     @selected_ratings = params[:ratings] || Movie.all_ratings_as_hash
-      
+    sort = params[:sort]
     
+    if sort.nil?
+        # What to do if empty?
+    else 
+        session[:sort] = sort
+    end
       
-    sort = params[:sort]  
-    if sort == "by_title"
+      if params[:ratings].nil?
+          #Do Nothing
+      else
+          session[:ratings] = @selected_ratings
+      end
+      
+    if sort == "by_title" || session[:sort] == "by_title"
         @title_class = "bg-warning hilite"
-        @movies = Movie.with_ratings(@selected_ratings.keys).order(:title)
-    elsif sort == "by_date"
+        @movies = Movie.with_ratings(session[:ratings].keys).order(:title)
+             
+    elsif sort == "by_date" || session[:sort] == "by_date"
         @date_class = "bg-warning hilite"
-        @movies = Movie.with_ratings(@selected_ratings.keys).order(:release_date)
+        @movies = Movie.with_ratings(session[:ratings].keys).order(:release_date)
+        
     else
         @movies = Movie.with_ratings(@selected_ratings.keys)
+        session[:ratings] = @selected_ratings
+          
     end
   end
 

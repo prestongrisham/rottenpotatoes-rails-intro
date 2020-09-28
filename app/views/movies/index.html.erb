@@ -3,12 +3,14 @@
 
 <%#  Part 2: Start here... %>
 
+<h1><%= session[:sort] %></h1>
+
 <%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
   Include:
   <% @all_ratings.each do |rating| %>
     <div class="form-check  form-check-inline">
       <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
-      <%= check_box_tag "ratings[#{rating}]", rating, @selected_ratings.include?(rating), class: 'form-check-input', id:"ratings_#{rating}" %>
+      <%= check_box_tag "ratings[#{rating}]", rating, session[:ratings].include?(rating), class: 'form-check-input', id:"ratings_#{rating}" %>
     </div>
   <% end %>
   <%= submit_tag 'Refresh', class: 'btn btn-primary', id: 'ratings_submit' %>
